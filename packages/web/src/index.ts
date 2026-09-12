@@ -12,6 +12,7 @@ export {
   FormAccurateBridgeImpl,
   getFormAccurate,
   initFormAccurate,
+  resetFormAccurate,
 } from "./bridge.js";
 
 export {

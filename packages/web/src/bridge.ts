@@ -142,12 +142,17 @@ export class FormAccurateBridgeImpl implements FormAccurateBridge {
     const schema = this.getSchema(formId);
     const currentState = this.getOrCreateState(schema.formId);
 
-    // 1. Write values to real DOM elements (triggers native input/change)
+    // 1. Apply caller values to state
+    let updatedState = applyValues(currentState, values);
+
+    // 2. Write values to real DOM elements (triggers native input/change)
     this.registry.writeValues(schema.formId, values);
 
-    // 2. Read back combined state from DOM
-    const mergedValues = this.registry.readValues(schema.formId);
-    const updatedState = applyValues(currentState, mergedValues);
+    // 3. Read back combined state from DOM
+    const domValues = this.registry.readValues(schema.formId);
+    if (Object.keys(domValues).length > 0) {
+      updatedState = applyValues(updatedState, domValues);
+    }
     this.states.set(schema.formId, updatedState);
 
     // Clear any previous error displays when values are modified
@@ -303,4 +308,19 @@ export function getFormAccurate(): FormAccurateBridge {
     return initFormAccurate();
   }
   return globalBridge;
+}
+
+/**
+ * Resets the global FormAccurate bridge and registry, disconnecting observers.
+ * Designed for test cleanup and SPA full teardown.
+ */
+export function resetFormAccurate(): void {
+  if (globalRegistry) {
+    globalRegistry.stopObserver();
+    globalRegistry = null;
+  }
+  globalBridge = null;
+  if (typeof window !== "undefined") {
+    delete (window as unknown as { FormAccurate?: unknown }).FormAccurate;
+  }
 }

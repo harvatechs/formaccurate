@@ -40,7 +40,12 @@ export class FormRegistry {
   }
 
   public getBinding(formId: string): FormBinding | undefined {
-    return this.bindings.get(formId);
+    let binding = this.bindings.get(formId);
+    if (!binding && typeof document !== "undefined") {
+      this.scan();
+      binding = this.bindings.get(formId);
+    }
+    return binding;
   }
 
   public listForms(): Array<{ formId: string; title?: string | undefined }> {
@@ -124,7 +129,7 @@ export class FormRegistry {
   }
 
   public readValues(formId: string): Record<string, unknown> {
-    const binding = this.bindings.get(formId);
+    const binding = this.getBinding(formId);
     if (!binding) return {};
 
     const values: Record<string, unknown> = {};
@@ -138,7 +143,7 @@ export class FormRegistry {
   }
 
   public writeValues(formId: string, values: Record<string, unknown>): void {
-    const binding = this.bindings.get(formId);
+    const binding = this.getBinding(formId);
     if (!binding) return;
 
     for (const [fieldId, val] of Object.entries(values)) {
