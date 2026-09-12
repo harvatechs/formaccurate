@@ -1,23 +1,8 @@
-# @formaccurate/core
+import { describe, expect, it } from "vitest";
+import type { AgentFormSchema } from "../schema/types.js";
+import { toFormDefinitionJsonSchema, toJsonSchema } from "./to-json-schema.js";
 
-Pure TypeScript schema types, Zod validation engine, state machine, and JSON Schema export for FormAccurate.
-
-- **Zero dependencies** on DOM or Node.js runtime APIs (runs in Node, Browser, Bun, Deno, Cloudflare Workers, Edge runtimes).
-- **Pure and deterministic**: identical validation results in browser client and backend server.
-- **Strict TypeScript** with full TSDoc on every public export.
-
-## Installation
-
-```bash
-pnpm add @formaccurate/core
-```
-
-## Quickstart: Validating a Form
-
-```ts
-import { validateForm, type AgentFormSchema } from "@formaccurate/core";
-
-export const businessPermitSchema: AgentFormSchema = {
+const businessPermitSchema: AgentFormSchema = {
   $schema: "https://formaccurate.dev/schema/v1.json",
   formId: "business-permit-application",
   version: "1.0.0",
@@ -109,65 +94,61 @@ export const businessPermitSchema: AgentFormSchema = {
       required: true,
     },
   ],
-  actions: [
-    { id: "submit", label: "Submit Application", type: "submit" },
-  ],
+  actions: [{ id: "submit", label: "Submit Application", type: "submit" }],
 };
 
-// 1. Partial invalid input:
-const errors = validateForm(businessPermitSchema, {
-  legal_name: "Acme LLC",
-  email: "invalid-email-address",
-  business_type: "llc",
-  // llc_registration_number is missing even though visibleWhen matched
+describe("toJsonSchema", () => {
+  it("converts Business Permit Application into valid JSON Schema", () => {
+    const jsonSchema = toJsonSchema(businessPermitSchema);
+
+    expect(jsonSchema.$schema).toBe("http://json-schema.org/draft-07/schema#");
+    expect(jsonSchema.title).toBe("Business Permit Application");
+    expect(jsonSchema.description).toBe("Apply for a municipal business permit.");
+    expect(jsonSchema.type).toBe("object");
+
+    const props = jsonSchema.properties as Record<string, Record<string, unknown>>;
+    expect(props.legal_name).toMatchObject({
+      title: "Legal Business Name",
+      type: "string",
+      maxLength: 200,
+    });
+    expect(props.email).toMatchObject({
+      title: "Contact Email",
+      type: "string",
+      format: "email",
+    });
+    expect(props.business_type).toMatchObject({
+      title: "Business Type",
+      type: "string",
+      enum: ["sole_proprietor", "llc", "corporation"],
+    });
+    expect(props.employee_count).toMatchObject({
+      title: "Number of Employees",
+      type: "integer",
+      minimum: 0,
+    });
+    expect(props.supporting_documents).toMatchObject({
+      title: "Supporting Documents",
+      type: "array",
+      maxItems: 5,
+    });
+    expect(props.declaration_true).toMatchObject({
+      title: "I declare the information is true",
+      type: "boolean",
+    });
+
+    expect(jsonSchema.required).toEqual([
+      "legal_name",
+      "email",
+      "business_type",
+      "llc_registration_number",
+      "declaration_true",
+    ]);
+  });
+
+  it("exports AgentFormSchema specification itself as JSON Schema", () => {
+    const defSchema = toFormDefinitionJsonSchema();
+    expect(defSchema).toBeDefined();
+    expect(typeof defSchema).toBe("object");
+  });
 });
-
-// errors:
-// [
-//   { fieldId: "email", code: "type", message: "Contact Email must be a valid email address" },
-//   { fieldId: "llc_registration_number", code: "required", message: "LLC Registration Number is required" }
-// ]
-
-// 2. Complete valid input for submission:
-const validErrors = validateForm(
-  businessPermitSchema,
-  {
-    legal_name: "Acme LLC",
-    email: "contact@acme.com",
-    business_type: "llc",
-    llc_registration_number: "LLC-99182",
-    employee_count: 10,
-    declaration_true: true,
-  },
-  { isSubmit: true },
-);
-
-// validErrors: [] (form is submittable)
-```
-
-## State Machine
-
-```ts
-import {
-  createFormState,
-  applyValues,
-  transitionFormState,
-} from "@formaccurate/core";
-
-const state = createFormState({ formId: "business-permit-application" });
-// state.status === "draft"
-// state.sessionId === "sess_01J..."
-
-const filled = applyValues(state, { legal_name: "Acme Inc" });
-const validating = transitionFormState(filled, "validating");
-const valid = transitionFormState(validating, "valid");
-```
-
-## JSON Schema Export
-
-```ts
-import { toJsonSchema } from "@formaccurate/core";
-
-const jsonSchema = toJsonSchema(businessPermitSchema);
-// Generates standard Draft-07 JSON Schema for OpenAPI and agent tooling.
-```
