@@ -1,0 +1,98 @@
+{
+  "$schema": "https://formaccurate.dev/schema/v1.json",
+  "version": "1.0.0",
+  "formId": "business-permit-application",
+  "title": "Commercial Operating Permit Application",
+  "description": "Official municipal application for retail and commercial operating permits.",
+  "locale": "en-US",
+  "consent": {
+    "required": true,
+    "statement": "I declare under penalty of perjury that the statements made herein are true and correct.",
+    "confirmationFieldId": "confirm_truthful"
+  },
+  "fields": [
+    {
+      "id": "business_name",
+      "type": "string",
+      "label": "Legal Business Name",
+      "description": "Acme Enterprises LLC",
+      "required": true,
+      "minLength": 3,
+      "maxLength": 100
+    },
+    {
+      "id": "entity_type",
+      "type": "select",
+      "label": "Entity Structure",
+      "required": true,
+      "options": [
+        { "value": "llc", "label": "Limited Liability Company (LLC)" },
+        { "value": "corp", "label": "Corporation (C-Corp or S-Corp)" },
+        { "value": "sole_prop", "label": "Sole Proprietorship" },
+        { "value": "non_profit", "label": "501(c)(3) Non-Profit" }
+      ]
+    },
+    {
+      "id": "tax_id",
+      "type": "string",
+      "label": "Federal Employer ID (EIN)",
+      "description": "12-3456789",
+      "required": true,
+      "pattern": "^\\d{2}-\\d{7}$"
+    },
+    {
+      "id": "primary_contact_email",
+      "type": "email",
+      "label": "Primary Contact Email",
+      "description": "authorized@company.com",
+      "required": true
+    },
+    {
+      "id": "estimated_employees",
+      "type": "integer",
+      "label": "Estimated Full-Time Employees",
+      "required": true,
+      "minimum": 1,
+      "maximum": 10000
+    },
+    {
+      "id": "has_physical_storefront",
+      "type": "boolean",
+      "label": "Physical retail location or customer-facing office",
+      "defaultValue": false
+    },
+    {
+      "id": "storefront_address",
+      "type": "string",
+      "label": "Storefront Street Address",
+      "required": true,
+      "visibleWhen": {
+        "field": "has_physical_storefront",
+        "operator": "equals",
+        "value": true
+      }
+    },
+    {
+      "id": "corporate_documents",
+      "type": "file",
+      "label": "Articles of Organization / Incorporation (PDF)",
+      "required": true,
+      "accept": ["application/pdf", ".pdf"],
+      "maxFiles": 1,
+      "maxSizeMb": 10
+    },
+    {
+      "id": "confirm_truthful",
+      "type": "boolean",
+      "label": "I declare under penalty of perjury that the statements made are true and correct.",
+      "required": true
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit",
+      "label": "Submit Application",
+      "type": "submit"
+    }
+  ]
+}

@@ -97,6 +97,43 @@ This mounts `/.well-known/formaccurate.json`, `/agent/forms/:formId/schema`,
 `/agent/forms/:formId/state`, `/agent/forms/:formId/validate`, and
 `/agent/forms/:formId/submit`. Full reference: [`docs/spec-protocol.md`](./docs/spec-protocol.md).
 
+## Running the Demos (Side-by-Side Human & Agent)
+
+FormAccurate provides interactive examples illustrating the core value proposition: **the exact same form definition operates for both humans in a browser and autonomous agents over HTTP or the in-page bridge.**
+
+### 1. Full-Stack Demo Server (`examples/demo-server`)
+
+The demo server hosts an official municipal *Commercial Operating Permit Application* with live discovery, schema constraints, document uploads, and verifiable receipt generation:
+
+```bash
+# Start the HTTP server on http://localhost:3000
+pnpm --filter demo-server start
+```
+
+- Open `http://localhost:3000` to interact with the **Human Flow** (plain HTML form submitting directly to the server).
+- In another terminal, run the **Autonomous Agent Flow**:
+  ```bash
+  pnpm --filter demo-server agent
+  ```
+  The script autonomously discovers the form at `/.well-known/formaccurate.json`, retrieves the schema, initializes a draft session, uploads corporate documentation (`.pdf`), incrementally fills fields, runs server-side validation, confirms required consent, submits with an idempotency key, and verifies the cryptographic SHA-256 receipt.
+
+### 2. React 18 Application (`examples/react-app`)
+
+Demonstrates `@formaccurate/react`'s `<FormAccurateProvider>` and `useFormAccurate()` hook:
+
+```bash
+pnpm --filter react-app dev
+```
+
+Provides a live side-by-side layout: the left side displays a reactive human form; the right side provides an interactive Agent Protocol Console that inspects `window.FormAccurate`, reads state, and automates form submission.
+
+### 3. Vanilla HTML & Browser Bridge (`examples/vanilla-html`)
+
+Demonstrates zero-framework progressive enhancement using `@formaccurate/web`:
+
+- Open `examples/vanilla-html/index.html` directly in your browser.
+- Uses `data-fa-*` annotations on standard DOM elements with real-time bridge telemetry.
+
 ## Documentation map
 
 | Doc | Audience | Purpose |
