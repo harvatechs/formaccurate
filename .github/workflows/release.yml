@@ -17,6 +17,9 @@ jobs:
       pull-requests: write
       id-token: write
 
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,12 +43,12 @@ jobs:
         run: pnpm build
 
       - name: Check NPM_TOKEN configuration
-        if: ${{ secrets.NPM_TOKEN == '' }}
+        if: ${{ env.NPM_TOKEN == '' }}
         run: |
           echo "::warning::NPM_TOKEN secret is not set in GitHub repository secrets. Automated publish is skipped until configured."
 
       - name: Create Release Pull Request or Publish
-        if: ${{ secrets.NPM_TOKEN != '' }}
+        if: ${{ env.NPM_TOKEN != '' }}
         id: changesets
         uses: changesets/action@v1
         with:
