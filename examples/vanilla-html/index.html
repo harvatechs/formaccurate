@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormAccurate — Business Permit Application (Agent + Human Demo)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(16, 21, 33, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-primary: #6366f1;
+      --accent-secondary: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: rgba(9, 13, 22, 0.8);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: #6366f1;
+      --error: #f43f5e;
+      --success: #10b981;
+      --terminal-bg: #030712;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    header {
+      max-width: 1400px;
+      margin: 0 auto 36px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .layout-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(16px);
+      padding: 32px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    label .req {
+      color: var(--accent-primary);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent-primary);
+      cursor: pointer;
+    }
+
+    .declaration-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), #4f46e5);
+      color: white;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-secondary), #0891b2);
+      color: white;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4);
+    }
+
+    /* Terminal Console */
+    .terminal-container {
+      background: var(--terminal-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #38bdf8;
+      height: 440px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .terminal-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .fa-error-message {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .fa-field-error {
+      border-color: var(--error) !important;
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15) !important;
+    }
+
+    .receipt-box {
+      margin-top: 16px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 16px;
+      border-radius: 10px;
+      color: #34d399;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-badge">FormAccurate</div>
+      <div>
+        <h1>Deterministic Agent Form Protocol</h1>
+        <p class="tagline">Opt-in form discoverability, validation, and submission — without vision models or screenshots.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout-grid">
+    <!-- Left Column: Human Interface -->
+    <section class="glass-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>🏛️</span>
+          <span>Municipal Business Permit Form</span>
+        </h2>
+        <span class="status-pill" id="form-status-pill">State: Draft</span>
+      </div>
+
+      <div id="form-errors-container" data-fa-errors></div>
+
+      <form id="permit-form" data-fa-form="business-permit-application" novalidate>
+        <div class="form-group">
+          <label for="legal_name">Legal Business Name <span class="req">*</span></label>
+          <input id="legal_name" name="legal_name" data-fa-field="legal_name" type="text" placeholder="e.g. Acme Innovations LLC" autocomplete="organization" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Contact Email <span class="req">*</span></label>
+          <input id="email" name="email" data-fa-field="email" type="email" placeholder="owner@acme.com" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="business_type">Business Type <span class="req">*</span></label>
+          <select id="business_type" name="business_type" data-fa-field="business_type" required>
+            <option value="">Select legal entity...</option>
+            <option value="sole_proprietor">Sole Proprietor</option>
+            <option value="llc">Limited Liability Company (LLC)</option>
+            <option value="corporation">Corporation</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="llc-group">
+          <label for="llc_registration_number">LLC Registration Number <span class="req">*</span></label>
+          <input id="llc_registration_number" name="llc_registration_number" data-fa-field="llc_registration_number" type="text" placeholder="LLC-12345">
+        </div>
+
+        <div class="form-group">
+          <label for="employee_count">Number of Employees</label>
+          <input id="employee_count" name="employee_count" data-fa-field="employee_count" type="number" min="0" placeholder="0">
+        </div>
+
+        <div class="checkbox-group">
+          <input id="declaration_true" name="declaration_true" data-fa-field="declaration_true" type="checkbox" required>
+          <label for="declaration_true" class="declaration-text">
+            <strong>Legal Declaration</strong><br>
+            I confirm the information provided is true, complete, and accurate to the best of my knowledge under penalty of perjury.
+          </label>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" data-fa-action="submit" class="btn btn-primary">
+            Submit Application
+          </button>
+          <button type="button" id="btn-reset" class="btn btn-secondary">
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <div id="receipt-display" class="receipt-box hidden">
+        <strong>✓ Application Submitted Successfully</strong>
+        <div id="receipt-content" style="margin-top: 8px; font-family: monospace;"></div>
+      </div>
+    </section>
+
+    <!-- Right Column: Simulated AI Agent Operations -->
+    <section class="glass-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>🤖</span>
+          <span>Agent Protocol Bridge</span>
+        </h2>
+        <span class="status-pill">window.FormAccurate</span>
+      </div>
+
+      <div class="terminal-header">
+        <span>BRIDGE CONSOLE OUTPUT</span>
+        <span id="terminal-clock">READY</span>
+      </div>
+
+      <div id="terminal" class="terminal-container">
+[System] FormAccurate bridge initialized.
+[System] Discovering forms on page...
+[Discovered] Form: "business-permit-application"
+[Ready] Waiting for human interaction or agent command.
+      </div>
+
+      <div class="terminal-actions">
+        <button id="btn-agent-fill" class="btn btn-accent">
+          1. Agent Fill
+        </button>
+        <button id="btn-agent-validate" class="btn btn-secondary">
+          2. Agent Validate
+        </button>
+        <button id="btn-agent-submit" class="btn btn-primary">
+          3. Agent Submit
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initFormAccurate } from "../../packages/web/dist/index.js";
+
+    // Initialize bridge
+    const bridge = initFormAccurate();
+    bridge.debug(true);
+
+    const terminal = document.getElementById("terminal");
+    const statusPill = document.getElementById("form-status-pill");
+    const receiptBox = document.getElementById("receipt-display");
+    const receiptContent = document.getElementById("receipt-content");
+
+    function logTerminal(msg) {
+      const ts = new Date().toISOString().split("T")[1].slice(0, 8);
+      terminal.textContent += `\n[${ts}] ${msg}`;
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // Register full schema for Business Permit Application
+    bridge.registerSchema({
+      $schema: "https://formaccurate.dev/schema/v1.json",
+      formId: "business-permit-application",
+      version: "1.0.0",
+      title: "Business Permit Application",
+      description: "Apply for a municipal business permit.",
+      locale: "en-US",
+      auth: { required: true, scopes: ["form:read", "form:write", "form:submit"] },
+      consent: {
+        required: true,
+        statement: "I confirm the information provided is true and accurate.",
+        confirmationFieldId: "declaration_true",
+      },
+      fields: [
+        { id: "legal_name", type: "string", label: "Legal Business Name", required: true, maxLength: 200, autocomplete: "organization" },
+        { id: "email", type: "email", label: "Contact Email", required: true, autocomplete: "email" },
+        {
+          id: "business_type", type: "select", label: "Business Type", required: true,
+          options: [
+            { value: "sole_proprietor", label: "Sole Proprietor" },
+            { value: "llc", label: "LLC" },
+            { value: "corporation", label: "Corporation" }
+          ]
+        },
+        {
+          id: "llc_registration_number", type: "string", label: "LLC Registration Number",
+          required: true, visibleWhen: { field: "business_type", equals: "llc" }
+        },
+        { id: "employee_count", type: "integer", label: "Number of Employees", required: false, minimum: 0 },
+        { id: "declaration_true", type: "boolean", label: "I declare the information is true", required: true }
+      ],
+      actions: [{ id: "submit", label: "Submit Application", type: "submit" }]
+    });
+
+    // Handle conditional visibility in UI for llc_registration_number
+    const businessTypeSelect = document.getElementById("business_type");
+    const llcGroup = document.getElementById("llc-group");
+
+    function updateLlcVisibility() {
+      if (businessTypeSelect.value === "llc") {
+        llcGroup.classList.remove("hidden");
+      } else {
+        llcGroup.classList.add("hidden");
+      }
+    }
+    businessTypeSelect.addEventListener("change", updateLlcVisibility);
+    updateLlcVisibility();
+
+    // Listen to bridge events
+    bridge.on("change", (payload) => {
+      statusPill.textContent = "State: Draft";
+      logTerminal(`Agent Event "change": values updated (${Object.keys(payload.values).length} fields)`);
+      updateLlcVisibility();
+    });
+
+    bridge.on("validate", (payload) => {
+      statusPill.textContent = `State: ${payload.status.toUpperCase()}`;
+      if (payload.errors.length === 0) {
+        logTerminal(`Agent Event "validate": VALID (0 errors)`);
+      } else {
+        logTerminal(`Agent Event "validate": INVALID (${payload.errors.length} errors: ${payload.errors.map(e => e.fieldId + ":" + e.code).join(", ")})`);
+      }
+    });
+
+    bridge.on("submit", (payload) => {
+      statusPill.textContent = "State: SUBMITTED";
+      logTerminal(`Agent Event "submit": Receipt created (${payload.receipt.submissionId})`);
+      receiptContent.textContent = `ID: ${payload.receipt.submissionId}\nChecksum: ${payload.receipt.checksum}\nReceived: ${payload.receipt.receivedAt}`;
+      receiptBox.classList.remove("hidden");
+    });
+
+    // Agent Action 1: Fill
+    document.getElementById("btn-agent-fill").addEventListener("click", () => {
+      logTerminal(`Calling window.FormAccurate.setValues("business-permit-application", {...})`);
+      bridge.setValues("business-permit-application", {
+        legal_name: "Apex Autonomous Systems LLC",
+        email: "filings@apex-systems.io",
+        business_type: "llc",
+        llc_registration_number: "LLC-994812",
+        employee_count: 12,
+        declaration_true: true
+      });
+      updateLlcVisibility();
+    });
+
+    // Agent Action 2: Validate
+    document.getElementById("btn-agent-validate").addEventListener("click", () => {
+      logTerminal(`Calling window.FormAccurate.validate("business-permit-application")`);
+      const state = bridge.validate("business-permit-application");
+    });
+
+    // Agent Action 3: Submit
+    document.getElementById("btn-agent-submit").addEventListener("click", async () => {
+      logTerminal(`Calling window.FormAccurate.submit("business-permit-application", { consent: { confirmed: true } })`);
+      try {
+        const receipt = await bridge.submit("business-permit-application", { consent: { confirmed: true } });
+        logTerminal(`Submission Receipt confirmed! Checksum: ${receipt.checksum}`);
+      } catch (err) {
+        logTerminal(`Submission Error: ${err.message}`);
+      }
+    });
+
+    // Human Reset
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      document.getElementById("permit-form").reset();
+      updateLlcVisibility();
+      receiptBox.classList.add("hidden");
+      statusPill.textContent = "State: Draft";
+      logTerminal("Form reset by user.");
+    });
+
+    // Human Submit
+    document.getElementById("permit-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await bridge.submit("business-permit-application");
+      } catch (err) {
+        logTerminal(`Submission blocked: ${err.message}`);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "example-vanilla-html",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Open index.html in a browser or serve via static file server'"
+  }
+}

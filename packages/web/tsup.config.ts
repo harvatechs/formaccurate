@@ -7,4 +7,5 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   target: "es2022",
+  noExternal: ["@formaccurate/core", "zod", "zod-to-json-schema"],
 });
