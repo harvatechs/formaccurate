@@ -158,6 +158,9 @@ function createMockServer() {
     if (path === `/agent/forms/${TEST_FORM.formId}/validate` && method === "POST") {
       const body = JSON.parse((init?.body as string) || "{}");
       const session = sessions.get(body.sessionId);
+      if (!session) {
+        return new Response(JSON.stringify({ error: "not found" }), { status: 404 });
+      }
       const errors = [];
       if (!session.values.businessName) {
         errors.push({ fieldId: "businessName", code: "required", message: "Business name required" });

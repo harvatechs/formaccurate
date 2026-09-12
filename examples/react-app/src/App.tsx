@@ -4,7 +4,7 @@ import type { SubmissionReceipt } from "@formaccurate/core";
 import { businessPermitSchema } from "./schema.js";
 
 function BusinessPermitForm() {
-  const { formId, values, errors, isValid, isSubmitting, setValues, validate, submit } =
+  const { formId, values, errors, isSubmitting, setValues, validate, submit } =
     useFormAccurate();
 
   const [receipt, setReceipt] = useState<SubmissionReceipt | null>(null);

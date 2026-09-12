@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 import { serve } from "@hono/node-server";
 import {
   createFormAccurateServer,
@@ -7,7 +9,6 @@ import {
 import { businessPermitSchema } from "./schema.js";
 
 const PORT = Number(process.env.PORT || 3000);
-const HOST = "0.0.0.0";
 const SITE_ORIGIN = process.env.SITE_ORIGIN || `http://localhost:${PORT}`;
 
 export const authProvider = staticApiKeyAuthProvider({
@@ -83,9 +84,9 @@ export function startServer(port: number = PORT) {
 }
 
 // Auto-start when executed directly (e.g. `pnpm start` / `tsx src/server.ts`)
+const entryArg = process.argv[1];
 const isDirectEntry =
-  process.argv[1] &&
-  (process.argv[1].endsWith("server.ts") || process.argv[1].endsWith("server.js"));
+  entryArg !== undefined && path.resolve(entryArg) === fileURLToPath(import.meta.url);
 
 if (isDirectEntry) {
   startServer();
