@@ -12,6 +12,7 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "changeset": "changeset",
+    "publish:packages": "pnpm -r publish",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
