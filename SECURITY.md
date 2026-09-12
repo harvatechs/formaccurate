@@ -6,7 +6,7 @@ are the reason this project is allowed to exist instead of "just automating any 
 
 ## Reporting a vulnerability
 
-Email **security@formaccurate.dev** (placeholder — update before public launch) with details and
+Email **security@formaccurate.dev** with details and
 reproduction steps. Do not open a public issue for anything exploitable. We aim to acknowledge
 within 48 hours and provide a remediation timeline within 5 business days.
 
