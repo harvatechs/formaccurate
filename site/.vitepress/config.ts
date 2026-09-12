@@ -2,7 +2,49 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "FormAccurate",
-  description: "Deterministic Agent Form Protocol & Open-Source Monorepo",
+  description: "Native Form Protocol & Autonomous Agent Schema Infrastructure",
+  base: process.env.GITHUB_PAGES ? "/formaccurate/" : "/",
+
+  head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["meta", { name: "theme-color", content: "#ffffff" }],
+    ["meta", { property: "og:type", content: "website" }],
+    [
+      "meta",
+      { property: "og:title", content: "FormAccurate — Native Form Protocol for AI Agents" },
+    ],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content:
+          "Turn web forms into agent-readable schemas and programmable APIs without screenshots, vision models, or DOM guessing.",
+      },
+    ],
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    [
+      "meta",
+      { name: "twitter:title", content: "FormAccurate — Native Form Protocol for AI Agents" },
+    ],
+    [
+      "meta",
+      {
+        name: "twitter:description",
+        content:
+          "Turn web forms into agent-readable schemas and programmable APIs without screenshots, vision models, or DOM guessing.",
+      },
+    ],
+    ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+    ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],
+    [
+      "link",
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap",
+      },
+    ],
+  ],
+
   themeConfig: {
     nav: [
       { text: "Guide", link: "/guide/getting-started" },
@@ -49,9 +91,7 @@ export default defineConfig({
       },
     ],
 
-    socialLinks: [
-      { icon: "github", link: "https://github.com/harvatechs/formaccurate" },
-    ],
+    socialLinks: [{ icon: "github", link: "https://github.com/harvatechs/formaccurate" }],
 
     footer: {
       message: "Released under the MIT License.",
