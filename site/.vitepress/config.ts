@@ -9,7 +9,7 @@ export default defineConfig({
       { text: "Protocol Specs", link: "/spec/schema" },
       { text: "Packages", link: "/packages/core" },
       { text: "Security", link: "/guide/security" },
-      { text: "GitHub", link: "https://github.com/formaccurate/formaccurate" },
+      { text: "GitHub", link: "https://github.com/harvatechs/formaccurate" },
     ],
 
     sidebar: [
@@ -50,7 +50,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/formaccurate/formaccurate" },
+      { icon: "github", link: "https://github.com/harvatechs/formaccurate" },
     ],
 
     footer: {

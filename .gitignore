@@ -9,3 +9,8 @@ test-results/
 playwright-report/
 .vitepress/dist/
 .vitepress/cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example

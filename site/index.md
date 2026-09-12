@@ -11,7 +11,7 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/formaccurate/formaccurate
+      link: https://github.com/harvatechs/formaccurate
     - theme: alt
       text: Protocol Spec
       link: /spec/protocol

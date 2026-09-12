@@ -4,6 +4,15 @@
   "private": true,
   "type": "module",
   "description": "Make web forms natively agent-readable without vision models or DOM guessing.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harvatechs/formaccurate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/harvatechs/formaccurate/issues"
+  },
+  "homepage": "https://github.com/harvatechs/formaccurate#readme",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",

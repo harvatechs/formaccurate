@@ -16,7 +16,7 @@ boilerplate. This file is the practical "how do I get set up" companion to it.
 ## Getting set up
 
 ```bash
-git clone https://github.com/formaccurate/formaccurate.git
+git clone https://github.com/harvatechs/formaccurate.git
 cd formaccurate
 pnpm install
 pnpm build

@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/formaccurate/formaccurate.git",
+    "url": "git+https://github.com/harvatechs/formaccurate.git",
     "directory": "packages/server"
   }
 }
